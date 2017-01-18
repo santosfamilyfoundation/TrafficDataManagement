@@ -1,4 +1,5 @@
 #import pandas
+# import tornado
 import numpy
 import sqlite3
 import storage
@@ -17,11 +18,20 @@ if storage.tableExists('stmarc.sqlite','indicators'):
 	for i in interactions:
 		TTC = i.getIndicator("Time to Collision")
 		if (TTC != None):
-			plot(range(TTC.getTimeInterval().first,TTC.getTimeInterval().last+1), TTC.getValues(), linewidth=2.0)
+			# figure()
+			sums = 0
+			length = 0
+			for val in TTC.getValues():
+				if (val != None):
+					sums += val
+					length += 1
+			average = sums/length
+			plot(average, "o", linewidth=2.0)
 			TTC.getValues()
+	title('Interation #{}'.format(i.getNum()))
 	xlabel('Frame of Calculation')
 	ylabel('Time to Collision (in frames)')
-	axis([180, 2000, 0, 2500])
+	# axis([180, 2000, 0, 2500])
 	show()
 	
 	# show()
